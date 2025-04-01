@@ -1,0 +1,8 @@
+{
+    "functions": {
+      "api/signup": {
+        "runtime": "nodejs18.x"
+      }
+    }
+  }
+  
