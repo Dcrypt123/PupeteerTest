@@ -1,51 +1,37 @@
-import puppeteer from 'puppeteer';
 
-const SIGNUP_URL = 'https://dharanishshivkirankarthikeyan.github.io/datasharingApp/signup.html';
 
-async function createNode() {
-    const browser = await puppeteer.launch({ headless: false });
-    const page = await browser.newPage();
+const puppeteer = require("puppeteer");
+// Launch the browser and open a new blank page
 
-    try {
-        await page.goto(SIGNUP_URL, { waitUntil: 'domcontentloaded' });
-        console.log("Opened signup page");
-
-        // Select "Sign up as a Node" radio button
-        await page.click('input[name="role"][value="node"]');
-        console.log("Selected 'Sign up as a Node'");
-
-        // Click the "Sign Up" button
-        await page.click('#signupButton');
-        console.log("Clicked 'Sign Up' button");
-
-        // Wait for confirmation toast
-        await page.waitForSelector('#toast', { timeout: 5000 });
-
-        const toastMessage = await page.$eval('#toast', el => el.innerText);
-        if (toastMessage.includes("Node created successfully")) {
-            console.log("Node created successfully!");
-        } else {
-            console.log("Failed to create node:", toastMessage);
-        }
-
-        // Wait for redirect confirmation
-        await page.waitForNavigation({ waitUntil: 'load' });
-        console.log("Redirected successfully");
-
-    } catch (error) {
-        console.error("Error creating node:", error);
-    } finally {
-        await browser.close();
+async function main(){
+    var browser = await puppeteer.launch({args: ['--no-sandbox'],timeout:0});
+    for(let i = 0; i<5;i++){
+        await signupNode(browser);
     }
+    setTimeout(()=>{
+        return;
+    },2147483646)
 }
 
-async function main() {
-    const numNodes = 5;
-    for (let i = 0; i < numNodes; i++) {
-        console.log(`Creating node ${i + 1}...`);
-        await createNode();
-        await new Promise(resolve => setTimeout(resolve, 2000));
-    }
+
+
+async function signupNode(browser){
+    page = await browser.newPage();
+    const minLoadingTime = new Promise(resolve => setTimeout(resolve, 2750));
+
+    
+    // Navigate the page to a URL.
+    await page.goto('https://dharanishshivkirankarthikeyan.github.io/datasharingApp/signup.html');
+    await minLoadingTime
+
+    // Set screen size.
+
+    var element = await page.waitForSelector('::-p-xpath(//*[@id="signupNodeButton"])');
+   await  minLoadingTime
+    await element.click();
+    minLoadingTime
+    await await element.dispose();
+
 }
 
 main();
